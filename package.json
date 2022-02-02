@@ -1,0 +1,24 @@
+{
+  "name": "jobportal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.2",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "pretty": "^2.0.0"
+  }
+}

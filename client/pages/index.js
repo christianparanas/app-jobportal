@@ -42,7 +42,6 @@ export default function Home() {
             <Grid item xs={12} key={key}>
               <Skeleton
                 variant="rectangular"
-                width={210}
                 height={118}
               />
             </Grid>

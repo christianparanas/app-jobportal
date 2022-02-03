@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import useSWR from "swr";
+import { useState, useEffect } from "react";
 
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
@@ -7,20 +6,34 @@ import Container from "@mui/material/Container";
 
 import { JobCard } from "../components";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { catchErrors, getPreviewJobs } from "../utils";
 
 export default function Home() {
-  const { data, error } = useSWR("/api/data", fetcher);
+  const [jobs, setJobs] = useState(null);
 
-  if (error) return <div>Failed...</div>;
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const data = await getPreviewJobs({
+        host: "https://ph.indeed.com/jobs?",
+        query: "HTML",
+        location: "Manila",
+        radius: "5",
+      });
 
-  console.log(data);
+      setJobs(data)
+      console.log(data);
+    };
+
+    catchErrors(fetchJobs());
+  }, []);
+
+  if(!jobs) return <>Loading</>
 
   return (
     <div>
-      {data ? (
+      {jobs ? (
         <Grid container spacing={1} p={2}>
-          {data.map((job, key) => (
+          {jobs.map((job, key) => (
             <Grid item xs={12}>
               <JobCard props={job} key={key} />
             </Grid>
@@ -42,4 +55,10 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+Home.getInitialProps = async (ctx) => {
+  const res = await fetch('https://api.github.com/repos/vercel/next.js')
+  const json = await res.json()
+  return { stars: json.stargazers_count }
 }

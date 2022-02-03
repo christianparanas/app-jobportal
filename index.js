@@ -3,17 +3,49 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const pretty = require("pretty");
+const querystring = require("querystring")
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
-const scrape = async () => {
+const queryData = data => {
+  const query = querystring.stringify({
+    q: data.query,
+    l: data.location
+  })
+
+  return {
+    query,
+    host: data.host
+  }
+}
+
+
+const loopThru = ($, arr) => {
+  const itemArr = []
+
+  arr.each((idx, element) => {
+    itemArr.push($(element).text())
+  })
+
+  return itemArr
+}
+
+const scrapeJobs = async (queryObj) => {
   try {
-    const { data } = await axios.get("https://ph.indeed.com/jobs?q=IT");
+    const que = queryData({
+      host: queryObj.host,
+      query: queryObj.query,
+      location: queryObj.location
+    })
+
+    console.log(`${que['host']}${que['query']}`)
+
+    const { data } = await axios.get(`${que['host']}${que['query']}`);
 
     const $ = cheerio.load(data);
-
     const jobList = $(".job_seen_beacon");
     const jobs = [];
 
@@ -23,16 +55,10 @@ const scrape = async () => {
       job.title = $(el).find(".jobTitle span").text();
       job.companyName = $(el).find(".companyName").text();
       job.companyLocation = $(el).find(".companyLocation").text() || $(el).find(".companyLocation span").text();
-      job.salary = $(el).find(".salary-snippet span").text();
+      job.salary = $(el).find(".salary-snippet span").text() || "Salary Unavailable."
 
       // get job snippet
-      const jobSnippet = $(el).find(".job-snippet ul li")
-      const jobSnippets = []
-
-      jobSnippet.each((idx, element) => {
-        jobSnippets.push($(element).text())
-      })
-      job.snippet = jobSnippets
+      job.snippet = loopThru($, $(el).find(".job-snippet ul li"))
 
       job.isEasilyApply = $(el).find(".iaTextBlack").text();
       job.isUrgentHiring = ($(el).find(".shelfItem .urgentlyHiring").text() ? true : false)
@@ -41,12 +67,17 @@ const scrape = async () => {
       jobs.push(job);
     });
 
-    console.dir(jobs);
+    return jobs
+
   } catch (err) {
-    console.error(err);
+    return err;
   }
 };
 
-scrape();
+app.post("/", async (req, res) => {
+  const jobs = await scrapeJobs(req.body);
+
+  res.status(200).json(jobs)
+})
 
 app.listen(PORT, () => console.log(`App started on port ${PORT}.`));

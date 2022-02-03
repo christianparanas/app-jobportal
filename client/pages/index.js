@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
+import { Typography, Paper, Container, Grid, Skeleton } from '@mui/material';
 
-import Skeleton from "@mui/material/Skeleton";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-
+// components
 import { JobCard } from "../components";
 
+// utils
 import { catchErrors, getPreviewJobs } from "../utils";
 
 export default function Home() {
@@ -27,24 +26,21 @@ export default function Home() {
     catchErrors(fetchJobs());
   }, []);
 
-  if(!jobs) return <>Loading</>
-
   return (
     <div>
       {jobs ? (
         <Grid container spacing={1} p={2}>
           {jobs.map((job, key) => (
-            <Grid item xs={12}>
-              <JobCard props={job} key={key} />
+            <Grid item xs={12} key={key}>
+              <JobCard props={job} />
             </Grid>
           ))}
         </Grid>
       ) : (
         <Grid container spacing={1} p={2}>
           {[...Array(10)].map((x, key) => (
-            <Grid item xs={12}>
+            <Grid item xs={12} key={key}>
               <Skeleton
-                key={key}
                 variant="rectangular"
                 width={210}
                 height={118}
@@ -55,10 +51,4 @@ export default function Home() {
       )}
     </div>
   );
-}
-
-Home.getInitialProps = async (ctx) => {
-  const res = await fetch('https://api.github.com/repos/vercel/next.js')
-  const json = await res.json()
-  return { stars: json.stargazers_count }
 }

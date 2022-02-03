@@ -60,15 +60,20 @@ const scrapeJobs = async (queryObj) => {
         $(el).find(".companyLocation").text() ||
         $(el).find(".companyLocation span").text();
       job.salary =
-        $(el).find(".salary-snippet span").text() || "Salary Unavailable.";
+        $(el).find(".salary-snippet span").text() || false;
 
       // get job snippet
       job.snippet = loopThru($, $(el).find(".job-snippet ul li"));
 
-      job.isEasilyApply = $(el).find(".iaTextBlack").text();
+      job.isEasilyApply = $(el).find(".iaTextBlack").text(); 
       job.isUrgentHiring = $(el).find(".shelfItem .urgentlyHiring").text()
         ? true
         : false;
+        job.responsiveEmployer = $(el).find(".shelfItem .responsiveEmployer").text()
+        ? true
+        : false;
+
+      // $(el).find(".date .visually-hidden").remove();
       job.datePosted = $(el).find(".date").text();
 
       jobs.push(job);

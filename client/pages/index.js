@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Typography, Paper, Container, Grid, Skeleton } from '@mui/material';
 
 // components
-import { JobCard } from "../components";
+import { JobCard, Navbar } from "../components";
 
 // utils
 import { catchErrors, getPreviewJobs } from "../utils";
@@ -28,6 +28,8 @@ export default function Home() {
 
   return (
     <div>
+      <Navbar />
+
       {jobs ? (
         <Grid container spacing={1} p={2}>
           {jobs.map((job, key) => (

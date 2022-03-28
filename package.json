@@ -1,13 +1,14 @@
 {
-  "name": "jobportal",
+  "name": "JobPortal",
   "version": "1.0.0",
-  "description": "",
+  "description": "Job Posting Scraper",
   "main": "index.js",
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "server": "nodemon index.js",
     "client": "cd client && npm run dev",
-    "postinstall": "cd client && npm install"
+    "postinstall": "cd client && npm install",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",

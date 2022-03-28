@@ -13,21 +13,21 @@ const FlexContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: ${props => props.salary ? "#e6e6e6" : "#fff"};
+  background-color: ${(props) => (props.salary ? "#e6e6e6" : "#fff")};
   width: fit-content;
   padding: 4px 8px;
   border-radius: 4px;
-  font-weight: ${props => props.salary ? 600 : 100 };
+  font-weight: ${(props) => (props.salary ? 600 : 100)};
 
   i {
-    color: ${props => props.salary ? "darkblue" : "" };
+    color: ${(props) => (props.salary ? "darkblue" : "")};
   }
 `;
 
 const UnorderdListContainer = styled.ul`
   padding: 0 20px;
   margin-top: 5px;
-`
+`;
 
 export default function JobCard({ props }) {
   return (

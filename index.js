@@ -1,8 +1,6 @@
-const logger = require("morgan");
 const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const pretty = require("pretty");
 const querystring = require("querystring");
 const cors = require("cors");
 

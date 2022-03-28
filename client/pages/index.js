@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Typography, Paper, Container, Grid, Skeleton } from '@mui/material';
+import { Typography, Paper, Container, Grid, Skeleton } from "@mui/material";
 
 // components
 import { JobCard, Navbar } from "../components";
@@ -19,7 +19,7 @@ export default function Home() {
         radius: "5",
       });
 
-      setJobs(data)
+      setJobs(data);
       console.log(data);
     };
 
@@ -42,10 +42,7 @@ export default function Home() {
         <Grid container spacing={1} p={2}>
           {[...Array(10)].map((x, key) => (
             <Grid item xs={12} key={key}>
-              <Skeleton
-                variant="rectangular"
-                height={118}
-              />
+              <Skeleton variant="rectangular" height={118} />
             </Grid>
           ))}
         </Grid>
